@@ -4,6 +4,7 @@ import { ConfigModule , ConfigService} from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Coffe } from './entity/coffe';
 import { AuthModule } from './moduls/auth.module';
+import { User } from './entity/user';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }),
@@ -16,7 +17,7 @@ import { AuthModule } from './moduls/auth.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [Coffe],
+        entities: [Coffe,User],
         synchronize: true,
       }),
       inject: [ConfigService],

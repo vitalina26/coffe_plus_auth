@@ -14,11 +14,11 @@ export class AuthController {
   }
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
-    
+    return await this.authService.login(loginDto); 
   }
   @Post('/refresh-token')
   async refreshToken(@Body() refreshToken: RefreshTokenDto) {
-   
+    return await this.authService.refreshToken(refreshToken); 
   }
   
   
