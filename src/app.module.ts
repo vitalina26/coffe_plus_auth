@@ -5,6 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Coffe } from './entity/coffe';
 import { AuthModule } from './moduls/auth.module';
 import { User } from './entity/user';
+import { UsersService } from './services/users.service';
+import { UsersModule } from './moduls/user.module';
+import { UsersController } from './controllers/user.controller';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }),
@@ -23,8 +27,9 @@ import { User } from './entity/user';
       inject: [ConfigService],
     }),
     CoffeModule,
-    AuthModule],
-  controllers: [],
-  providers: [],
+    AuthModule,
+    UsersModule],
+  controllers: [UsersController,],
+  providers: [UsersService],
 })
 export class AppModule {}

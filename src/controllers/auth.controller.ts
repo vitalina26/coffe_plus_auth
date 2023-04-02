@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AuthService } from '../services/auth.service';
 import { RegisterDto } from '../dto/registerDto';
 import { LoginDto } from '../dto/loginDto';
-import { RefreshTokenDto } from 'src/dto/refresh-token';
 
 @Controller('auth')
 export class AuthController {
@@ -16,12 +15,5 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     return await this.authService.login(loginDto); 
   }
-  @Post('/refresh-token')
-  async refreshToken(@Body() refreshToken: RefreshTokenDto) {
-    return await this.authService.refreshToken(refreshToken); 
-  }
-  
-  
-
 
 }

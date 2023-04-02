@@ -1,10 +1,10 @@
 import { BeansClass } from "src/dto/coffe.dto";
-import { Entity,Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
-import { User } from "./user";
+import { Entity,Column, PrimaryGeneratedColumn, ManyToOne, PrimaryColumn } from "typeorm";
+
 
 @Entity({name :'coffe'})
 export class Coffe{
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn()
     id: string;
 
     @Column()
@@ -19,8 +19,7 @@ export class Coffe{
     @Column()
     beansClass: BeansClass;
 
-    @ManyToOne(() => User, (user) => user.coffes)
-    user: User;
+   
     
 
 }

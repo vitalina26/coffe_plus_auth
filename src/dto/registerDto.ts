@@ -1,7 +1,15 @@
-import { IsNotEmpty,IsString,Length } from "class-validator";
-import { IsEmail } from "class-validator/types/decorator/decorators";
+import { IsNotEmpty,IsString,Length,IsEmail, MinLength } from "class-validator";
+
 
 export class RegisterDto {
+
+    @IsNotEmpty()
+    @MinLength(3)
+    secondname: string;
+
+    @IsNotEmpty()
+    @MinLength(3)
+    firstname: string; 
 
     @IsNotEmpty()
     @IsEmail()
@@ -13,7 +21,6 @@ export class RegisterDto {
     password: string;
 
     @IsNotEmpty()
-    @IsString()
-    @Length(8)
-    passwoedConfirm: string;
+    phonenumber: string;
+
 }

@@ -1,17 +1,14 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable,UnauthorizedException } from '@nestjs/common';
 import { RegisterDto } from '../dto/registerDto';
 import { LoginDto } from '../dto/loginDto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserRole } from 'src/entity/user';
 import { Repository } from 'typeorm';
 import { hash, genSalt,compare } from 'bcrypt';
-import { RefreshTokenDto } from 'src/dto/refresh-token';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 export interface JWTTokens {
   accessToken: string;
-  refreshToken: string;
 }
 
 @Injectable()
@@ -20,7 +17,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
-    private configService: ConfigService,
 
   ) { }
 
@@ -35,19 +31,24 @@ export class AuthService {
       throw new HttpException('email already registrated', 400);
     }
     const salt = await genSalt();
-
-    this.userRepository.save({
+    const user = {
+      firstname: registerDto.firstname,
+      secondname: registerDto.secondname,
+      phonenumber: registerDto.phonenumber,
       email: registerDto.email,
-      userSalt : salt,
+      userSalt: salt,
       password: await this.hashPassword(registerDto.password, salt),
       role: UserRole.USER,
-    })
+      
+    }
+    this.userRepository.save(user)
+    return user;
     
   }
 
 
 
-  async login(loginDto: LoginDto): Promise<JWTTokens> {
+  async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
     const user = await this.userRepository.findOne({ where: { email } });
 
@@ -55,28 +56,20 @@ export class AuthService {
       throw new HttpException('Invalid data', 400);
     }
 
-    const validPassword = await compare(password, user.password);
+    const hashPassword = await this.hashPassword(password, user.userSalt);
+    //(hashPassword === user.password)
 
-    if (!validPassword) {
+    if (!(hashPassword === user.password)) {
       throw new HttpException('Invalid data', 400);
     }
-    return this.getTokens(user);
-  }
-
-
-
-  async refreshToken(token:RefreshTokenDto): Promise<JWTTokens> {
-    try {
-      const { sub: email } = await this.jwtService.verifyAsync(token.refreshToken, {
-        secret: this.configService.get<string>('JWT_REFRESH_TOKEN_SECRET'),
-      });
-      const user = await this.userRepository.findOneOrFail({
-        where: { email },
-      });
-      return this.getTokens(user);
-    } catch (err) {
-      throw new HttpException('Invalid credentials', 400);
-    }
+    const payload = {
+      sub: user.email,
+      role: user.role,
+    };
+    
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 
 
@@ -86,38 +79,5 @@ export class AuthService {
   }
 
 
-  private async getTokens(user: User): Promise<JWTTokens> {
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(
-        {
-          sub: user.email,
-          role: user.role,
-        },
-        {
-          secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
-          expiresIn: this.configService.get<string>(
-            'JWT_EXPIRATION',
-          ),
-        },
-      ),
-      this.jwtService.signAsync(
-        {
-          sub: user.email,
-          role: user.role,
-        },
-        {
-          secret: this.configService.get<string>(' JWT_REFRESH_TOKEN_SECRET'),
-          expiresIn: this.configService.get<string>(
-            'JWT_REFRESH_TOKEN_EXPIRATION',
-          ),
-        },
-      ),
-    ]);
-
-    return {
-      accessToken,
-      refreshToken,
-    };
-  }
-
+  
 }

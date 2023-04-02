@@ -8,18 +8,25 @@ export enum UserRole {
 
 @Entity({ name: 'user' })
 export class User {
-  @Column({ nullable: false })
+  @Column()
   userSalt: string;
+
+  @Column()
+  firstname: string;
+
+  @Column()
+  secondname: string;
 
   @PrimaryColumn()
   email: string;
 
-  @Column({ nullable: false })
+  @Column()
   password: string;
 
   @Column({ type: 'varchar', default: UserRole.USER, name: 'userRole' })
   role: UserRole;
 
-  @OneToMany(() => Coffe, (coffe) => coffe.user)
-  coffes: Coffe[];
+  @Column()
+  phonenumber: string;
+
 }
