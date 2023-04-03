@@ -40,7 +40,7 @@ export class CoffeController {
   @Role(UserRole.ADMIN)
   @UseGuards(AuthGuard, RoleGuard)
   @Patch('/:id')
-  async update(@Param('id',new ParseUUIDPipe()) id: string, @Body() { price }) {
+  async updatePrice(@Param('id',new ParseUUIDPipe()) id: string, @Body() { price }) {
     return await this.coffeService.updatePrice(id, price );
   }
 
