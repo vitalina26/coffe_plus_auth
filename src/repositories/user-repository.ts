@@ -11,11 +11,8 @@ export class UserRepossitory extends Repository<User>{
         super(User,dataSource.createEntityManager())
     }
     async findByEmail(email: string):Promise<User> {
-        const user = await this.findOne({ where: { email } });
-        if (!user) {
-          throw new HttpException('NotFound',HttpStatus.NOT_FOUND)
-        }
-        return user;
+        return await this.findOne({ where: { email } });
+       
     }
       
     async createUser(user: User) {
@@ -27,11 +24,7 @@ export class UserRepossitory extends Repository<User>{
     }
     
     async findById(id: string):Promise<User> {
-        const user = await this.findOne({ where: { id } });
-        if (!user) {
-          throw new HttpException('NotFound',HttpStatus.NOT_FOUND)
-        }
-        return user;
+        return await this.findOne({ where: { id } });
     }
     
      async updateUser(id: string, updatedUser: RegisterDto,): Promise<void> {

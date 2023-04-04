@@ -35,7 +35,6 @@ import { CoffeRepossitory } from './repositories/coffe-repository';
     CoffeModule,
     AuthModule,
     UserModule],
-  controllers: [UserController,CoffeController,AuthController],
-  providers: [UserService,CoffeService,AuthService],
+  
 })
 export class AppModule {}

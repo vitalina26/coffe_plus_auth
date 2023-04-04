@@ -12,7 +12,7 @@ export class CoffeRepossitory extends Repository<Coffe>{
     }
         
     async createCoffe(coffe: Coffe) {
-            await this.save(coffe);
+        await this.save(coffe);
      }
         
     async findAll() :Promise<Coffe[]>{
@@ -20,12 +20,7 @@ export class CoffeRepossitory extends Repository<Coffe>{
     }
         
     async findOnebyId(id: string):Promise<Coffe> {
-        const coffe = await this.findOne({ where: { id } });
-        if (!coffe) {
-          throw new HttpException('NotFound',HttpStatus.NOT_FOUND)
-         }
-         return coffe;
-              
+        return await this.findOne({ where: { id } });
     }
         
     async updateCoffe(id: string, updatedcoffe: CoffeDto ):Promise<void> {

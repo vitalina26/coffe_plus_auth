@@ -11,6 +11,7 @@ import {  ConfigService} from '@nestjs/config';
 import { UserRepossitory } from 'src/repositories/user-repository';
 
 @Module({
+  
   imports: [TypeOrmModule.forFeature([User]), JwtModule.register({
     global: true,
     secret:  "JWT_ACCESS_TOKEN_SECRET",
@@ -20,7 +21,8 @@ import { UserRepossitory } from 'src/repositories/user-repository';
     defaultStrategy: 'jwt',
     property: 'user',
     session: false,
-}),],
+  }),
+  ],
   exports: [TypeOrmModule,PassportModule,JwtModule],
   controllers: [AuthController],
   providers: [AuthService,JwtStrategy,UserRepossitory]

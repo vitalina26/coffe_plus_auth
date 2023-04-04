@@ -1,4 +1,4 @@
-import { HttpException, Injectable,UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable,UnauthorizedException } from '@nestjs/common';
 import { RegisterDto } from '../dto/registerDto';
 import { LoginDto } from '../dto/loginDto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,14 +16,18 @@ export interface JWTTokens {
 export class AuthService {
  
   constructor(
-     private userRepository: UserRepossitory,
     private jwtService: JwtService,
+    private userRepository: UserRepossitory,
+    
 
   ) { }
 
 
   async createUser(registerDto: RegisterDto) {
-    const existing = await this.userRepository.findByEmail(registerDto.email)
+    const existingUser = await this.userRepository.findByEmail(registerDto.email)
+    if (existingUser) {
+      throw new HttpException('User with this email exists', 400)
+    }
     const salt = await genSalt();
     const user = {
       id : uuidv4(),
@@ -45,7 +49,10 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
-    const user = await this.userRepository.findByEmail(email );
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      throw new HttpException('Invalid data', 400)
+    }
     const hashPassword = await this.hashPassword(password, user.userSalt);
     //(hashPassword === user.password)
 

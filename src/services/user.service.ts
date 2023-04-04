@@ -1,10 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { RegisterDto } from 'src/dto/registerDto';
-import { Coffe } from 'src/entity/coffe';
 import { User } from 'src/entity/user';
 import { UserRepossitory } from 'src/repositories/user-repository';
-import { Repository } from 'typeorm';
+
 
 @Injectable()
 export class UserService {
@@ -16,6 +14,9 @@ export class UserService {
         
       async findById(id: string):Promise<User> {
         const user = await this.userRepossitory.findById(id);
+        if (!user) {
+          throw new HttpException('NotFound',HttpStatus.NOT_FOUND)
+        }
         return user;
               
       }
