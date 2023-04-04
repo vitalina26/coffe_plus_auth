@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseGuards, Req, Put } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/decorator/role';
 import { CoffeDto } from 'src/dto/coffe.dto';
+import { RegisterDto } from 'src/dto/registerDto';
 import { UserRole } from 'src/entity/user';
 import { RoleGuard } from 'src/guard/role.guard';
 
@@ -15,8 +16,9 @@ export class CoffeController {
   @Role(UserRole.ADMIN)
   @UseGuards(AuthGuard, RoleGuard)
   @Post()
-  async create(@Body() coffe: CoffeDto) {
-    return await this.coffeService.create(coffe);
+  async create(@Body() coffe: CoffeDto, @Req() req: any) {
+    const user = <RegisterDto>req.user;
+    return await this.coffeService.create(coffe,req.user.id);
   }
 
   @Get()
@@ -32,16 +34,9 @@ export class CoffeController {
   
   @Role(UserRole.ADMIN)
   @UseGuards(AuthGuard, RoleGuard)
-  @Patch('/:id')
-  async updateDescription(@Param('id',new ParseUUIDPipe()) id: string, @Body() { description }) {
-    return await this.coffeService.updateDescription(id, description);
-  }
-
-  @Role(UserRole.ADMIN)
-  @UseGuards(AuthGuard, RoleGuard)
-  @Patch('/:id')
-  async updatePrice(@Param('id',new ParseUUIDPipe()) id: string, @Body() { price }) {
-    return await this.coffeService.updatePrice(id, price );
+  @Put('/:id')
+  async update(@Param('id',new ParseUUIDPipe()) id: string, @Body() coffeupdate: CoffeDto) {
+    return await this.coffeService.update(id, coffeupdate);
   }
 
   @Role(UserRole.ADMIN)

@@ -8,6 +8,10 @@ export enum UserRole {
 
 @Entity({ name: 'user' })
 export class User {
+  
+  @PrimaryColumn()
+  id: string;
+
   @Column()
   userSalt: string;
 
@@ -17,7 +21,7 @@ export class User {
   @Column()
   secondname: string;
 
-  @PrimaryColumn()
+  @Column()
   email: string;
 
   @Column()

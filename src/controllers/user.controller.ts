@@ -1,6 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Put, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/decorator/role';
+import { CoffeDto } from 'src/dto/coffe.dto';
+import { RegisterDto } from 'src/dto/registerDto';
 import { UserRole } from 'src/entity/user';
 import { RoleGuard } from 'src/guard/role.guard';
 import { UserService } from 'src/services/user.service';
@@ -8,39 +10,32 @@ import { UserService } from 'src/services/user.service';
 @Controller('user')
 export class UserController {
     
-    constructor(private readonly coffeService: UserService) {}
+    constructor(private readonly userService: UserService) {}
     @Role(UserRole.ADMIN)
     @UseGuards(AuthGuard, RoleGuard)
     @Get()
   async findAllUsers() {
-    return await this.coffeService.findAllUsers();
+    return await this.userService.findAllUsers();
   }
 
 
  @UseGuards(AuthGuard)
-  @Get('/:email')
-  async findByEmail(@Param('email') email: string) {
-    return await this.coffeService.findByEmail(email);
+  @Get('/:id')
+  async findById(@Param('id') id: string) {
+    return await this.userService.findById(id);
   }
   
   
   @UseGuards(AuthGuard)
-  @Patch('/:email')
-  async updateDescription(@Param('email') email: string, @Body() { firstname }) {
-      return await this.coffeService.updateFirstName(email,firstname );
-  }
-
- 
-  @UseGuards(AuthGuard)
-  @Patch('/:email')
-  async updateSecondName(@Param('email') email: string, @Body() { secondname }) {
-    return await this.coffeService.updateSecondName(email, secondname );
+  @Put('/')
+  async update(@Req() req:any , @Body() userupdate: RegisterDto) {
+      return await this.userService.update(req.user.id, userupdate);
   }
 
   @Role(UserRole.ADMIN)
   @UseGuards(AuthGuard, RoleGuard)
-  @Delete('/:email')
-  async remove(@Param('email') email: string) {
-    return await this.coffeService.remove(email);
+  @Delete('/:id')
+  async remove(@Param('id') id: string) {
+    return await this.userService.remove(id);
   }
 }

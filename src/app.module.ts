@@ -13,6 +13,8 @@ import { CoffeService } from './services/coffe.service';
 import { CoffeController } from './controllers/coffe.controller';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './services/auth.service';
+import { UserRepossitory } from './repositories/user-repository';
+import { CoffeRepossitory } from './repositories/coffe-repository';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }),

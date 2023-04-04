@@ -1,5 +1,6 @@
-import { BeansClass } from "src/dto/coffe.dto";
+import { BeansClass, CookingMethod, Country, DegreeOfRoasting, ProcessingType } from "src/dto/coffe.dto";
 import { Entity,Column, PrimaryGeneratedColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { User } from "./user";
 
 
 @Entity({name :'coffe'})
@@ -19,7 +20,20 @@ export class Coffe{
     @Column()
     beansClass: BeansClass;
 
-   
+    @ManyToOne(() => User,(user) => user.id)
+    creator: string;
+
+    @Column()
+    cookingMethod: CookingMethod;
+    
+    @Column()
+    degreeOfRoasting: DegreeOfRoasting;
+
+    @Column()
+    country: Country;
+    
+    @Column()
+    processingType: ProcessingType;
     
 
 }

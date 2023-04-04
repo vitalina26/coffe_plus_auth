@@ -4,10 +4,12 @@ import { CoffeController } from '../controllers/coffe.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Coffe } from 'src/entity/coffe';
 import { AuthModule } from './auth.module';
+import { CoffeRepossitory } from 'src/repositories/coffe-repository';
 
 @Module({
   controllers: [CoffeController],
-  providers: [CoffeService],
-  imports: [TypeOrmModule.forFeature([Coffe]),AuthModule],
+  providers: [CoffeService,CoffeRepossitory],
+  imports: [TypeOrmModule.forFeature([Coffe]), AuthModule],
+  exports: [CoffeRepossitory]
 })
 export class CoffeModule {}

@@ -4,8 +4,11 @@ export class CoffeDto {
     price: number;
     description: string;
     beansClass: BeansClass;
-
-
+    cookingMethod: CookingMethod;
+    degreeOfRoasting: DegreeOfRoasting;
+    country: Country;
+    processingType: ProcessingType;
+    
 }
 export enum BeansClass{
     PREMIUM = 'premium',

@@ -6,32 +6,27 @@ import { User, UserRole } from 'src/entity/user';
 import { Repository } from 'typeorm';
 import { hash, genSalt,compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-
+import { UserRepossitory } from 'src/repositories/user-repository';
+import { v4 as uuidv4 } from 'uuid';
 export interface JWTTokens {
   accessToken: string;
 }
 
 @Injectable()
 export class AuthService {
-
+ 
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+     private userRepository: UserRepossitory,
     private jwtService: JwtService,
 
   ) { }
 
 
-
-
   async createUser(registerDto: RegisterDto) {
-    const existingUser = await this.userRepository.findOne({
-      where: {email : registerDto.email},
-    })
-    if (existingUser) {
-      throw new HttpException('email already registrated', 400);
-    }
+    const existing = await this.userRepository.findByEmail(registerDto.email)
     const salt = await genSalt();
     const user = {
+      id : uuidv4(),
       firstname: registerDto.firstname,
       secondname: registerDto.secondname,
       phonenumber: registerDto.phonenumber,
@@ -41,7 +36,7 @@ export class AuthService {
       role: UserRole.USER,
       
     }
-    this.userRepository.save(user)
+    this.userRepository.createUser(user)
     return user;
     
   }
@@ -50,12 +45,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
-    const user = await this.userRepository.findOne({ where: { email } });
-
-    if (!user) {
-      throw new HttpException('Invalid data', 400);
-    }
-
+    const user = await this.userRepository.findByEmail(email );
     const hashPassword = await this.hashPassword(password, user.userSalt);
     //(hashPassword === user.password)
 
@@ -63,7 +53,7 @@ export class AuthService {
       throw new HttpException('Invalid data', 400);
     }
     const payload = {
-      sub: user.email,
+      sub: user.id,
       role: user.role,
     };
     
