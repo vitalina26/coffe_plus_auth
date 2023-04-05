@@ -8,6 +8,7 @@ export class CoffeDto {
   country: Country;
   processingType: ProcessingType;
 }
+
 export enum BeansClass {
   PREMIUM = 'premium',
   SPETIALTY = 'spetialty',
