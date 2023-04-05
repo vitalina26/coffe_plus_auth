@@ -25,7 +25,15 @@ export enum DegreeOfRoasting {
   LIGHT = 'light',
   MEDIUM = 'medium',
 }
-export enum Country {}
+export enum Country {
+  EC = 'Ecuador',
+  ET = 'Ethiopia',
+  GT = 'Guatemala',
+  GN = 'Guinea',
+  ID = 'IDIndonesia',
+  KE = 'Kenya',
+  CO = 'Colombia',
+}
 export enum ProcessingType {
   WASHED = 'washed',
   NATURAL = 'natural',
