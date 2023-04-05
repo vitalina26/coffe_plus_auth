@@ -1,23 +1,15 @@
 import { Module } from '@nestjs/common';
 import { CoffeModule } from './moduls/coffe.module';
-import { ConfigModule , ConfigService} from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Coffe } from './entity/coffe';
 import { AuthModule } from './moduls/auth.module';
 import { User } from './entity/user';
-import { UserService } from './services/user.service';
 import { UserModule } from './moduls/user.module';
-import { UserController } from './controllers/user.controller';
-import { PassportModule } from '@nestjs/passport';
-import { CoffeService } from './services/coffe.service';
-import { CoffeController } from './controllers/coffe.controller';
-import { AuthController } from './controllers/auth.controller';
-import { AuthService } from './services/auth.service';
-import { UserRepossitory } from './repositories/user-repository';
-import { CoffeRepossitory } from './repositories/coffe-repository';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }),
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -27,14 +19,14 @@ import { CoffeRepossitory } from './repositories/coffe-repository';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [Coffe,User],
+        entities: [Coffe, User],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     CoffeModule,
     AuthModule,
-    UserModule],
-  
+    UserModule,
+  ],
 })
 export class AppModule {}

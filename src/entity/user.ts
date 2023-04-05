@@ -1,5 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
-import { Coffe } from './coffe';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 export enum UserRole {
   USER = 'user',
@@ -8,7 +7,6 @@ export enum UserRole {
 
 @Entity({ name: 'user' })
 export class User {
-  
   @PrimaryColumn()
   id: string;
 
@@ -32,5 +30,4 @@ export class User {
 
   @Column()
   phonenumber: string;
-
 }
