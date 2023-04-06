@@ -20,10 +20,18 @@ export class UserService {
   }
 
   async update(id: string, updatedUser: RegisterDto): Promise<void> {
+    const user = await this.userRepossitory.findById(id);
+    if (!user) {
+      throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
+    }
     await this.userRepossitory.updateUser(id, updatedUser);
   }
 
   async remove(id: string): Promise<void> {
+    const user = await this.userRepossitory.findById(id);
+    if (!user) {
+      throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
+    }
     await this.userRepossitory.removeUser(id);
   }
 }

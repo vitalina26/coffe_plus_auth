@@ -1,11 +1,20 @@
+import { IsNotEmpty } from 'class-validator';
 export class CoffeDto {
+  @IsNotEmpty()
   name: string;
+  @IsNotEmpty()
   price: number;
+  @IsNotEmpty()
   description: string;
+  @IsNotEmpty()
   beansClass: BeansClass;
+  @IsNotEmpty()
   cookingMethod: CookingMethod;
+  @IsNotEmpty()
   degreeOfRoasting: DegreeOfRoasting;
+  @IsNotEmpty()
   country: Country;
+  @IsNotEmpty()
   processingType: ProcessingType;
 }
 

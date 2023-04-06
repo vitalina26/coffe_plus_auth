@@ -25,8 +25,12 @@ export class Coffe {
   @Column()
   beansClass: BeansClass;
 
-  @ManyToOne(() => User, (user) => user.id)
-  creator: string;
+  @ManyToOne(() => User, (user) => user, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  creator: User;
 
   @Column()
   cookingMethod: CookingMethod;
