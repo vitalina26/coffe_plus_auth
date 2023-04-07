@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/decorator/role';
-import { RegisterDto } from 'src/dto/registerDto';
+import { UserUpdateDto } from 'src/dto/userUpdateDto';
 import { UserRole } from 'src/entity/user';
 import { HttpExceptionFilter } from 'src/fIlters/http-eception.filter';
 import { RoleGuard } from 'src/guard/role.guard';
@@ -37,7 +37,7 @@ export class UserController {
 
   @UseGuards(AuthGuard())
   @Put('/')
-  async update(@Req() req: any, @Body() userupdate: RegisterDto) {
+  async update(@Req() req: any, @Body() userupdate: UserUpdateDto) {
     return await this.userService.update(req.user.id, userupdate);
   }
 

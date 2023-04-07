@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { CoffeDto } from 'src/dto/coffe.dto';
+import { CoffeUpdateDto } from 'src/dto/coffeUpdateDto';
 import { Coffe } from 'src/entity/coffe';
 import { Repository, DataSource } from 'typeorm';
 
@@ -21,7 +21,7 @@ export class CoffeRepossitory extends Repository<Coffe> {
     return await this.findOne({ where: { id } });
   }
 
-  async updateCoffe(id: string, updatedcoffe: CoffeDto): Promise<void> {
+  async updateCoffe(id: string, updatedcoffe: CoffeUpdateDto): Promise<void> {
     await this.update({ id }, updatedcoffe);
   }
 

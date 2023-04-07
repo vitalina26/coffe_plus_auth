@@ -14,6 +14,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/decorator/role';
 import { CoffeDto } from 'src/dto/coffe.dto';
+import { CoffeUpdateDto } from 'src/dto/coffeUpdateDto';
 import { UserRole } from 'src/entity/user';
 import { HttpExceptionFilter } from 'src/fIlters/http-eception.filter';
 import { RoleGuard } from 'src/guard/role.guard';
@@ -47,7 +48,7 @@ export class CoffeController {
   @Put('/:id')
   async update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() coffeupdate: CoffeDto,
+    @Body() coffeupdate: CoffeUpdateDto,
   ) {
     return await this.coffeService.update(id, coffeupdate);
   }

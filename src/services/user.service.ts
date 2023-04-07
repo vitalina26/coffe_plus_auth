@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { RegisterDto } from 'src/dto/registerDto';
+import { UserUpdateDto } from 'src/dto/userUpdateDto';
 import { User } from 'src/entity/user';
 import { UserRepossitory } from 'src/repositories/user-repository';
 
@@ -19,7 +19,7 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, updatedUser: RegisterDto): Promise<void> {
+  async update(id: string, updatedUser: UserUpdateDto): Promise<void> {
     const user = await this.userRepossitory.findById(id);
     if (!user) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);

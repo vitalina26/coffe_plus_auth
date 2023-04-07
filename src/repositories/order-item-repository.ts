@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { OrderItemDto } from 'src/dto/order-item.dto';
+import { OrderItemUpdateDto } from 'src/dto/orderItemUpdateDto';
 import { OrderItem } from 'src/entity/order-item';
 import { Repository, DataSource } from 'typeorm';
 
@@ -25,7 +25,7 @@ export class OrderItemRepossitory extends Repository<OrderItem> {
 
   async updateOrderItem(
     id: string,
-    updatedOrderItem: OrderItemDto,
+    updatedOrderItem: OrderItemUpdateDto,
   ): Promise<void> {
     await this.update({ id }, updatedOrderItem);
   }

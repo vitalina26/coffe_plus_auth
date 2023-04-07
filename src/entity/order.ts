@@ -30,11 +30,7 @@ export class Order {
   })
   user: User;
 
-  @OneToMany(() => OrderItem, (item) => item, {
-    cascade: true,
-    onDelete: 'CASCADE',
-    eager: true,
-  })
+  @OneToMany(() => OrderItem, (item) => item)
   items: OrderItem[];
 }
 export enum Status {}

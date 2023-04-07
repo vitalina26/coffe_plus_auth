@@ -8,6 +8,8 @@ import { User } from './entity/user';
 import { UserModule } from './moduls/user.module';
 import { OrderModule } from './moduls/order.module';
 import { OrderItemModule } from './moduls/order-item.module';
+import { Order } from './entity/order';
+import { OrderItem } from './entity/order-item';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { OrderItemModule } from './moduls/order-item.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [Coffe, User],
+        entities: [Coffe, User, Order, OrderItem],
         synchronize: true,
       }),
       inject: [ConfigService],

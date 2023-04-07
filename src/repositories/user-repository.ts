@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { RegisterDto } from 'src/dto/registerDto';
+import { UserUpdateDto } from 'src/dto/userUpdateDto';
 import { User } from 'src/entity/user';
 import { Repository, DataSource } from 'typeorm';
 
@@ -24,7 +24,7 @@ export class UserRepossitory extends Repository<User> {
     return await this.findOne({ where: { id } });
   }
 
-  async updateUser(id: string, updatedUser: RegisterDto): Promise<void> {
+  async updateUser(id: string, updatedUser: UserUpdateDto): Promise<void> {
     await this.update({ id }, updatedUser);
   }
 

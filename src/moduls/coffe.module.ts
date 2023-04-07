@@ -11,5 +11,6 @@ import { UserModule } from './user.module';
   controllers: [CoffeController],
   providers: [CoffeService, CoffeRepossitory],
   imports: [TypeOrmModule.forFeature([Coffe]), AuthModule, UserModule],
+  exports: [CoffeRepossitory],
 })
 export class CoffeModule {}

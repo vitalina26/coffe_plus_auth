@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CoffeDto } from 'src/dto/coffe.dto';
+import { CoffeUpdateDto } from 'src/dto/coffeUpdateDto';
 import { Coffe } from 'src/entity/coffe';
 import { CoffeRepossitory } from 'src/repositories/coffe-repository';
 import { UserRepossitory } from 'src/repositories/user-repository';
@@ -33,7 +34,7 @@ export class CoffeService {
     return coffe;
   }
 
-  async update(id: string, updatedcoffe: CoffeDto): Promise<void> {
+  async update(id: string, updatedcoffe: CoffeUpdateDto): Promise<void> {
     const coffe = await this.coffeRepossitory.findOnebyId(id);
     if (!coffe) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
