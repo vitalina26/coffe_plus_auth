@@ -3,8 +3,8 @@ import {
   Column,
   ManyToOne,
   PrimaryColumn,
-  OneToMany,
   CreateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { OrderItem } from './order-item';
 import { User } from './user';
@@ -23,14 +23,19 @@ export class Order {
   @Column()
   status: Status;
 
-  @ManyToOne(() => User, (user) => user, {
+  @ManyToOne(() => User, (user) => user.id, {
     cascade: true,
     onDelete: 'CASCADE',
     eager: true,
   })
-  user: User;
+  user_id: string;
 
-  @OneToMany(() => OrderItem, (item) => item)
-  items: OrderItem[];
+  @OneToOne(() => OrderItem, (item) => item.id)
+  items: string[];
 }
-export enum Status {}
+export enum Status {
+  PROCESSING = 'processing',
+  FRAMED = 'framed',
+  SENT = 'sent',
+  DELIVERED = 'delivered',
+}

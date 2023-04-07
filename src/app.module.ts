@@ -24,7 +24,7 @@ import { OrderItem } from './entity/order-item';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [Coffe, User, Order, OrderItem],
-        synchronize: true,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),

@@ -26,7 +26,7 @@ export class OrderRepossitory extends Repository<Order> {
     await this.update({ id }, updatedOrder);
   }
 
-  async removeOrderItem(id: string): Promise<void> {
+  async removeOrder(id: string): Promise<void> {
     await this.delete({ id });
   }
 }

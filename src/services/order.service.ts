@@ -1,50 +1,36 @@
-import {
-  forwardRef,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Inject,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OrderDto } from 'src/dto/orderDto';
-import { OrderUpdateDto } from 'src/dto/orderUpdateDto';
-import { Order } from 'src/entity/order';
+import { Order, Status } from 'src/entity/order';
 import { OrderItem } from 'src/entity/order-item';
-import { OrderItemRepossitory } from 'src/repositories/order-item-repository';
 import { OrderRepossitory } from 'src/repositories/order-repository';
-import { UserRepossitory } from 'src/repositories/user-repository';
 import { v4 as uuidv4 } from 'uuid';
+import { OrderItemService } from './order-item.service';
+import { UserService } from './user.service';
 @Injectable()
 export class OrderService {
   constructor(
-    @Inject(forwardRef(() => OrderItemRepossitory))
-    private orderItemRepository: OrderItemRepossitory,
-    private userRepository: UserRepossitory,
+    private orderItemService: OrderItemService,
+    private userService: UserService,
     private orderRepository: OrderRepossitory,
   ) {}
 
   async create(owner_id: string, order_dto: OrderDto): Promise<Order> {
-    const user = await this.userRepository.findById(owner_id);
-    let total_price = 0;
-    if (!user) {
-      throw new HttpException('NotFound user', HttpStatus.NOT_FOUND);
-    }
     const items: OrderItem[] = await Promise.all(
       order_dto.items.map((item) => {
-        const orderItem = this.orderItemRepository.findOnebyId(item);
-        if (!orderItem) {
-          throw new HttpException('NotFound orderItem', HttpStatus.NOT_FOUND);
-        }
+        const orderItem = this.orderItemService.create(item);
         return orderItem;
       }),
     );
-    total_price = items.reduce((sum, b) => sum + b.price * b.quantity, 0);
+
+    const total_price = items.reduce((sum, b) => sum + b.price * b.quantity, 0);
+    const items_ids = items.map((item) => item.id);
     const order = {
       id: uuidv4(),
-      items: items,
-      status: order_dto.status,
+      items: items_ids,
+      status: Status.PROCESSING,
       date: new Date(),
       total_price: total_price,
-      user: user,
+      user_id: owner_id,
     };
     await this.orderRepository.createOrder(order);
     return order;
@@ -61,8 +47,16 @@ export class OrderService {
     }
     return order;
   }
+  async updateStatus(id: string, status: Status) {
+    const order = await this.orderRepository.findOnebyId(id);
+    if (!order) {
+      throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
+    }
+    await this.orderRepository.updateOrder(id, { status });
+    return await this.orderRepository.findOnebyId(id);
+  }
 
-  async update(id: string, updatedOrder: OrderUpdateDto): Promise<Order> {
+  /*async update(id: string, updatedOrder: OrderUpdateDto): Promise<Order> {
     const order = await this.orderRepository.findOnebyId(id);
     if (!order) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
@@ -71,7 +65,7 @@ export class OrderService {
     if (updatedOrder.items) {
       const items: OrderItem[] = await Promise.all(
         updatedOrder.items.map((item) => {
-          const orderItem = this.orderItemRepository.findOnebyId(item);
+          const orderItem = this.orderItemService.findOne(item);
           if (!orderItem) {
             throw new HttpException('NotFound orderItem', HttpStatus.NOT_FOUND);
           }
@@ -91,13 +85,13 @@ export class OrderService {
 
     await this.orderRepository.updateOrder(id, user_upd);
     return await this.orderRepository.findOnebyId(id);
-  }
+  }*/
 
   async remove(id: string): Promise<void> {
     const order = await this.orderRepository.findOnebyId(id);
     if (!order) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
     }
-    await this.orderItemRepository.removeOrderItem(id);
+    await this.orderRepository.removeOrder(id);
   }
 }

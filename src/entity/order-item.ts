@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Coffe } from 'src/entity/coffe';
-import { Order } from './order';
 
 @Entity({ name: 'order-item' })
 export class OrderItem {
@@ -13,17 +12,10 @@ export class OrderItem {
   @Column()
   price: number;
 
-  @ManyToOne(() => Order, (order) => order.items, {
+  @ManyToOne(() => Coffe, (coffe) => coffe.id, {
     cascade: true,
     onDelete: 'CASCADE',
     eager: true,
   })
-  order: Order;
-
-  @ManyToOne(() => Coffe, (coffe) => coffe, {
-    cascade: true,
-    onDelete: 'CASCADE',
-    eager: true,
-  })
-  coffe: Coffe;
+  coffe_id: string;
 }

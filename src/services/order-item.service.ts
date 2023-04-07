@@ -1,22 +1,12 @@
-import {
-  forwardRef,
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OrderItemDto } from 'src/dto/order-item.dto';
-import { OrderItemUpdateDto } from 'src/dto/orderItemUpdateDto';
 import { OrderItem } from 'src/entity/order-item';
 import { CoffeRepossitory } from 'src/repositories/coffe-repository';
 import { OrderItemRepossitory } from 'src/repositories/order-item-repository';
-import { OrderRepossitory } from 'src/repositories/order-repository';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class OrderItemService {
   constructor(
-    @Inject(forwardRef(() => OrderRepossitory))
-    private orderRepository: OrderRepossitory,
     private coffeRepository: CoffeRepossitory,
     private orderItemRepository: OrderItemRepossitory,
   ) {}
@@ -25,18 +15,14 @@ export class OrderItemService {
     const coffe = await this.coffeRepository.findOnebyId(
       order_item_dto.coffe_id,
     );
-    const order = await this.orderRepository.findOnebyId(
-      order_item_dto.order_id,
-    );
-    if (!(coffe && order)) {
-      throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
+    if (!coffe) {
+      throw new HttpException('NotFound coffe', HttpStatus.NOT_FOUND);
     }
     const order_item = {
       id: uuidv4(),
-      coffe: coffe,
-      order: order,
+      coffe_id: order_item_dto.coffe_id,
       quantity: order_item_dto.quantity,
-      price: order_item_dto.price,
+      price: coffe.price,
     };
     await this.orderItemRepository.createOrderItem(order_item);
     return order_item;
@@ -54,7 +40,7 @@ export class OrderItemService {
     return order_item;
   }
 
-  async update(
+  /* async update(
     id: string,
     updatedOrderItem: OrderItemUpdateDto,
   ): Promise<OrderItem> {
@@ -65,7 +51,7 @@ export class OrderItemService {
     await this.orderItemRepository.updateOrderItem(id, updatedOrderItem);
 
     return await this.orderItemRepository.findOnebyId(id);
-  }
+  }*/
 
   async remove(id: string): Promise<void> {
     const order_item = await this.orderItemRepository.findOnebyId(id);

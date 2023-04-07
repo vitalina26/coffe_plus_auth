@@ -25,8 +25,7 @@ import { OrderService } from 'src/services/order.service';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @Role(UserRole.ADMIN)
-  @UseGuards(AuthGuard(), RoleGuard)
+  @UseGuards(AuthGuard())
   @Post()
   async create(@Body() orderItem: OrderDto, @Req() req: any) {
     return await this.orderService.create(req.user.id, orderItem);
@@ -45,13 +44,14 @@ export class OrderController {
     return await this.orderService.findOne(id);
   }
 
-  @UseGuards(AuthGuard())
+  @Role(UserRole.ADMIN)
+  @UseGuards(AuthGuard(), RoleGuard)
   @Put('/:id')
-  async update(
+  async updateStatus(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() orderupdate: OrderUpdateDto,
   ) {
-    return await this.orderService.update(id, orderupdate);
+    return await this.orderService.updateStatus(id, orderupdate.status);
   }
 
   @Role(UserRole.ADMIN)

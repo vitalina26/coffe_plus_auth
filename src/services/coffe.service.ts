@@ -3,21 +3,13 @@ import { CoffeDto } from 'src/dto/coffe.dto';
 import { CoffeUpdateDto } from 'src/dto/coffeUpdateDto';
 import { Coffe } from 'src/entity/coffe';
 import { CoffeRepossitory } from 'src/repositories/coffe-repository';
-import { UserRepossitory } from 'src/repositories/user-repository';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class CoffeService {
-  constructor(
-    private coffeRepossitory: CoffeRepossitory,
-    private userRepository: UserRepossitory,
-  ) {}
+  constructor(private coffeRepossitory: CoffeRepossitory) {}
 
   async create(coffeDto: CoffeDto, creatorid: string): Promise<Coffe> {
-    const user = await this.userRepository.findById(creatorid);
-    if (!user) {
-      throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
-    }
-    const coffe = { id: uuidv4(), creator: user, ...coffeDto };
+    const coffe = { id: uuidv4(), creator_id: creatorid, ...coffeDto };
     await this.coffeRepossitory.createCoffe(coffe);
     return coffe;
   }

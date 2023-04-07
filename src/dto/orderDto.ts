@@ -1,8 +1,9 @@
 import { IsNotEmpty } from 'class-validator';
-import { Status } from 'src/entity/order';
-
 export class OrderDto {
   @IsNotEmpty()
-  status: Status;
-  items: string[];
+  items: CoffeIdAndQuantity[];
 }
+export type CoffeIdAndQuantity = {
+  coffe_id: string;
+  quantity: number;
+};
