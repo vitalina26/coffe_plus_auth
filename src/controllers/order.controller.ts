@@ -28,7 +28,7 @@ export class OrderController {
   @UseGuards(AuthGuard())
   @Post()
   async create(@Body() orderItem: OrderDto, @Req() req: any) {
-    return await this.orderService.create(req.user.id, orderItem);
+    return await this.orderService.create(req.user.sub, orderItem);
   }
 
   @Role(UserRole.ADMIN)

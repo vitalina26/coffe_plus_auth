@@ -9,7 +9,8 @@ export class OrderRepossitory extends Repository<Order> {
   }
 
   async createOrder(order: Order) {
-    await this.save(order);
+    console.log(order);
+    console.log(await this.save(order));
   }
 
   async findAll(): Promise<Order[]> {

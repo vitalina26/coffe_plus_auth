@@ -25,6 +25,8 @@ export class UserRepossitory extends Repository<User> {
   }
 
   async updateUser(id: string, updatedUser: UserUpdateDto): Promise<void> {
+    console.log(updatedUser);
+    console.log(id);
     await this.update({ id }, updatedUser);
   }
 

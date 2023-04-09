@@ -4,9 +4,7 @@ import {
   ManyToOne,
   PrimaryColumn,
   CreateDateColumn,
-  OneToOne,
 } from 'typeorm';
-import { OrderItem } from './order-item';
 import { User } from './user';
 
 @Entity({ name: 'order' })
@@ -29,8 +27,7 @@ export class Order {
     eager: true,
   })
   user_id: string;
-
-  @OneToOne(() => OrderItem, (item) => item.id)
+  @Column('text', { array: true })
   items: string[];
 }
 export enum Status {

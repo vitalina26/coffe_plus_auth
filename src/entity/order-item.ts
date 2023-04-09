@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Coffe } from 'src/entity/coffe';
+import { Order } from './order';
 
 @Entity({ name: 'order-item' })
 export class OrderItem {

@@ -19,12 +19,15 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, updatedUser: UserUpdateDto): Promise<void> {
+  async update(id: string, updatedUser: UserUpdateDto): Promise<User> {
+    console.log(updatedUser);
+    console.log(id);
     const user = await this.userRepossitory.findById(id);
     if (!user) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
     }
     await this.userRepossitory.updateUser(id, updatedUser);
+    return await this.userRepossitory.findById(id);
   }
 
   async remove(id: string): Promise<void> {

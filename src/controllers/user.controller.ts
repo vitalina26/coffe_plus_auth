@@ -38,7 +38,8 @@ export class UserController {
   @UseGuards(AuthGuard())
   @Put('/')
   async update(@Req() req: any, @Body() userupdate: UserUpdateDto) {
-    return await this.userService.update(req.user.id, userupdate);
+    console.log(req.user.sub);
+    return await this.userService.update(req.user.sub, userupdate);
   }
 
   @Role(UserRole.ADMIN)

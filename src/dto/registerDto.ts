@@ -5,6 +5,7 @@ import {
   IsEmail,
   MinLength,
 } from 'class-validator';
+import { UserRole } from 'src/entity/user';
 
 export class RegisterDto {
   @IsNotEmpty()
@@ -26,4 +27,7 @@ export class RegisterDto {
 
   @IsNotEmpty()
   phonenumber: string;
+
+  @IsNotEmpty()
+  role: UserRole;
 }

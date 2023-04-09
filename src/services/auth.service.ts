@@ -1,7 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../dto/registerDto';
 import { LoginDto } from '../dto/loginDto';
-import { UserRole } from 'src/entity/user';
 import { hash, genSalt } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepossitory } from 'src/repositories/user-repository';
@@ -33,7 +32,7 @@ export class AuthService {
       email: registerDto.email,
       userSalt: salt,
       password: await this.hashPassword(registerDto.password, salt),
-      role: UserRole.USER,
+      role: registerDto.role,
     };
     this.userRepository.createUser(user);
     return user;

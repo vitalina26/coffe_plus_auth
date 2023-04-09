@@ -26,12 +26,13 @@ export class CoffeService {
     return coffe;
   }
 
-  async update(id: string, updatedcoffe: CoffeUpdateDto): Promise<void> {
+  async update(id: string, updatedcoffe: CoffeUpdateDto): Promise<Coffe> {
     const coffe = await this.coffeRepossitory.findOnebyId(id);
     if (!coffe) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
     }
     await this.coffeRepossitory.updateCoffe(id, updatedcoffe);
+    return await this.coffeRepossitory.findOnebyId(id);
   }
 
   async remove(id: string): Promise<void> {

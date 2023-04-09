@@ -5,12 +5,10 @@ import { OrderItem } from 'src/entity/order-item';
 import { OrderRepossitory } from 'src/repositories/order-repository';
 import { v4 as uuidv4 } from 'uuid';
 import { OrderItemService } from './order-item.service';
-import { UserService } from './user.service';
 @Injectable()
 export class OrderService {
   constructor(
     private orderItemService: OrderItemService,
-    private userService: UserService,
     private orderRepository: OrderRepossitory,
   ) {}
 
@@ -33,6 +31,7 @@ export class OrderService {
       user_id: owner_id,
     };
     await this.orderRepository.createOrder(order);
+    console.log(order);
     return order;
   }
 
