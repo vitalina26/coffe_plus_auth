@@ -13,6 +13,9 @@ export class OrderItem {
   @Column()
   price: number;
 
+  @ManyToOne(() => Order, (order) => order.items)
+  order_id: string;
+
   @ManyToOne(() => Coffe, (coffe) => coffe.id, {
     cascade: true,
     onDelete: 'CASCADE',

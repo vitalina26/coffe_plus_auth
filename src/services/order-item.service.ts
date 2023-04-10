@@ -11,7 +11,10 @@ export class OrderItemService {
     private orderItemRepository: OrderItemRepossitory,
   ) {}
 
-  async create(order_item_dto: OrderItemDto): Promise<OrderItem> {
+  async create(
+    order_id: string,
+    order_item_dto: OrderItemDto,
+  ): Promise<OrderItem> {
     const coffe = await this.coffeRepository.findOnebyId(
       order_item_dto.coffe_id,
     );
@@ -21,6 +24,7 @@ export class OrderItemService {
     const order_item = {
       id: uuidv4(),
       coffe_id: order_item_dto.coffe_id,
+      order_id: order_id,
       quantity: order_item_dto.quantity,
       price: coffe.price,
     };

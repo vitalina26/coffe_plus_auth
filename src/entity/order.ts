@@ -4,7 +4,9 @@ import {
   ManyToOne,
   PrimaryColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { OrderItem } from './order-item';
 import { User } from './user';
 
 @Entity({ name: 'order' })
@@ -27,8 +29,13 @@ export class Order {
     eager: true,
   })
   user_id: string;
-  @Column('text', { array: true })
-  items: string[];
+
+  @OneToMany(() => OrderItem, (item) => item.order_id, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  items: OrderItem[];
 }
 export enum Status {
   PROCESSING = 'processing',

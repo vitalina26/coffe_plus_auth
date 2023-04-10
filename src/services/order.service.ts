@@ -13,26 +13,29 @@ export class OrderService {
   ) {}
 
   async create(owner_id: string, order_dto: OrderDto): Promise<Order> {
-    const items: OrderItem[] = await Promise.all(
-      order_dto.items.map((item) => {
-        const orderItem = this.orderItemService.create(item);
-        return orderItem;
-      }),
-    );
-
-    const total_price = items.reduce((sum, b) => sum + b.price * b.quantity, 0);
-    const items_ids = items.map((item) => item.id);
+    const order_id = uuidv4();
     const order = {
-      id: uuidv4(),
-      items: items_ids,
+      id: order_id,
+      items_ids: [],
+      items: [],
       status: Status.PROCESSING,
       date: new Date(),
-      total_price: total_price,
+      total_price: 0,
       user_id: owner_id,
     };
     await this.orderRepository.createOrder(order);
-    console.log(order);
-    return order;
+    const items: OrderItem[] = await Promise.all(
+      order_dto.items.map((item) => {
+        const orderItem = this.orderItemService.create(order_id, item);
+        return orderItem;
+      }),
+    );
+    const total_price = items.reduce((sum, b) => sum + b.price * b.quantity, 0);
+    order.items = items;
+    order.total_price = total_price;
+    const order1 = await this.orderRepository.createOrder(order);
+    console.log(order1);
+    return order1;
   }
 
   async findAll(): Promise<Order[]> {
