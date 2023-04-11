@@ -13,9 +13,8 @@ export class OrderService {
   ) {}
 
   async create(owner_id: string, order_dto: OrderDto): Promise<Order> {
-    const order_id = uuidv4();
     const order = {
-      id: order_id,
+      id: uuidv4(),
       items_ids: [],
       items: [],
       status: Status.PROCESSING,
@@ -26,7 +25,7 @@ export class OrderService {
     await this.orderRepository.createOrder(order);
     const items: OrderItem[] = await Promise.all(
       order_dto.items.map((item) => {
-        const orderItem = this.orderItemService.create(order_id, item);
+        const orderItem = this.orderItemService.create(order.id, item);
         return orderItem;
       }),
     );
@@ -34,7 +33,6 @@ export class OrderService {
     order.items = items;
     order.total_price = total_price;
     const order1 = await this.orderRepository.createOrder(order);
-    console.log(order1);
     return order1;
   }
 
