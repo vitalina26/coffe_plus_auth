@@ -32,8 +32,7 @@ export class OrderService {
     const total_price = items.reduce((sum, b) => sum + b.price * b.quantity, 0);
     order.items = items;
     order.total_price = total_price;
-    const order1 = await this.orderRepository.createOrder(order);
-    return order1;
+    return await this.orderRepository.createOrder(order);
   }
 
   async findAll(): Promise<Order[]> {
