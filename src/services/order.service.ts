@@ -34,9 +34,21 @@ export class OrderService {
     order.total_price = total_price;
     return await this.orderRepository.createOrder(order);
   }
-
+  async findUsersAll(user_id: string): Promise<Order[]> {
+    const response = await this.orderRepository.findUsersAll(user_id);
+    return response.slice().sort(function (a, b) {
+      const objB = new Date(b.date);
+      const objA = new Date(a.date);
+      return +objB - +objA;
+    });
+  }
   async findAll(): Promise<Order[]> {
-    return this.orderRepository.findAll();
+    const response = await this.orderRepository.findAll();
+    return response.slice().sort(function (a, b) {
+      const objB = new Date(b.date);
+      const objA = new Date(a.date);
+      return +objB - +objA;
+    });
   }
 
   async findOne(id: string): Promise<Order> {
@@ -46,12 +58,13 @@ export class OrderService {
     }
     return order;
   }
-  async updateStatus(id: string, status: Status) {
+  async updateStatus(id: string, status: { status: string }) {
     const order = await this.orderRepository.findOnebyId(id);
     if (!order) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
     }
-    await this.orderRepository.updateOrder(id, { status });
+    console.log(status);
+    await this.orderRepository.updateOrder(id, status);
     return await this.orderRepository.findOnebyId(id);
   }
 

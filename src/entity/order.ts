@@ -42,4 +42,5 @@ export enum Status {
   FRAMED = 'framed',
   SENT = 'sent',
   DELIVERED = 'delivered',
+  CANCELED = 'canceled',
 }

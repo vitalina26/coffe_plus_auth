@@ -15,7 +15,7 @@ import { UserRepossitory } from 'src/repositories/user-repository';
     JwtModule.register({
       global: true,
       secret: 'JWT_ACCESS_TOKEN_SECRET',
-      signOptions: { expiresIn: '1d' },
+      signOptions: { expiresIn: '2d' },
     }),
     PassportModule.register({
       defaultStrategy: 'jwt',

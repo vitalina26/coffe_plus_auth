@@ -28,15 +28,14 @@ export class UserController {
   async findAllUsers() {
     return await this.userService.findAllUsers();
   }
-
   @UseGuards(AuthGuard())
-  @Get('/:id')
-  async findById(@Param('id') id: string) {
-    return await this.userService.findById(id);
+  @Get('/one') //виправити
+  async findById(@Req() req: any) {
+    return await this.userService.findById(req.user.sub);
   }
 
   @UseGuards(AuthGuard())
-  @Put('/')
+  @Put('/update')
   async update(@Req() req: any, @Body() userupdate: UserUpdateDto) {
     console.log(req.user.sub);
     return await this.userService.update(req.user.sub, userupdate);

@@ -14,6 +14,9 @@ export class Coffe {
   id: string;
 
   @Column()
+  img_url: string;
+
+  @Column()
   name: string;
 
   @Column()
@@ -28,7 +31,7 @@ export class Coffe {
   @ManyToOne(() => User, (user) => user.id, {
     cascade: true,
     onDelete: 'CASCADE',
-    eager: true,
+    eager: false,
   })
   creator_id: string;
 

@@ -7,6 +7,7 @@ import {
 } from './coffe.dto';
 
 export class CoffeUpdateDto {
+  img_url?: string;
   name?: string;
   price?: number;
   description?: string;

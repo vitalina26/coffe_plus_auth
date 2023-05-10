@@ -32,13 +32,13 @@ export class CoffeController {
     return await this.coffeService.create(coffe, req.user.sub);
   }
 
-  @Get()
+  @Get('/all')
   async findAll() {
     return await this.coffeService.findAll();
   }
 
   @Get('/:id')
-  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+  async findOne(@Param('id') id: string) {
     return await this.coffeService.findOne(id);
   }
 

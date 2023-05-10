@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RegisterDto } from '../dto/registerDto';
 import { LoginDto } from '../dto/loginDto';
 import { hash, genSalt } from 'bcrypt';
@@ -56,8 +56,16 @@ export class AuthService {
     };
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      token: await this.jwtService.signAsync(payload),
     };
+  }
+  async verifyJwt(jwt: string): Promise<{ exp: number }> {
+    try {
+      const { exp } = await this.jwtService.verifyAsync(jwt);
+      return { exp };
+    } catch (error) {
+      throw new HttpException('Invalid JWT', HttpStatus.UNAUTHORIZED);
+    }
   }
 
   private hashPassword(password: string, salt: string) {

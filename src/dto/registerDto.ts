@@ -22,7 +22,7 @@ export class RegisterDto {
 
   @IsNotEmpty()
   @IsString()
-  @Length(8)
+  @MinLength(8)
   password: string;
 
   @IsNotEmpty()

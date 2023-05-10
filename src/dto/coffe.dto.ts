@@ -4,6 +4,9 @@ export class CoffeDto {
   name: string;
 
   @IsNotEmpty()
+  img_url: string;
+
+  @IsNotEmpty()
   price: number;
 
   @IsNotEmpty()
@@ -46,7 +49,7 @@ export enum Country {
   ET = 'Ethiopia',
   GT = 'Guatemala',
   GN = 'Guinea',
-  ID = 'IDIndonesia',
+  ID = 'Indonesia',
   KE = 'Kenya',
   CO = 'Colombia',
 }

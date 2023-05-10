@@ -14,7 +14,6 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/decorator/role';
 import { OrderDto } from 'src/dto/orderDto';
-import { OrderUpdateDto } from 'src/dto/orderUpdateDto';
 import { UserRole } from 'src/entity/user';
 import { HttpExceptionFilter } from 'src/fIlters/http-eception.filter';
 import { RoleGuard } from 'src/guard/role.guard';
@@ -33,7 +32,7 @@ export class OrderController {
 
   @Role(UserRole.ADMIN)
   @UseGuards(AuthGuard(), RoleGuard)
-  @Get()
+  @Get('/all')
   async findAll() {
     return await this.orderService.findAll();
   }
@@ -44,14 +43,21 @@ export class OrderController {
     return await this.orderService.findOne(id);
   }
 
+  @UseGuards(AuthGuard())
+  @Get('/user/all')
+  async findUsersAll(@Req() req: any) {
+    return await this.orderService.findUsersAll(req.user.sub);
+  }
+
   @Role(UserRole.ADMIN)
   @UseGuards(AuthGuard(), RoleGuard)
   @Put('/:id')
   async updateStatus(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() orderupdate: OrderUpdateDto,
+    @Body() status: { status: string },
   ) {
-    return await this.orderService.updateStatus(id, orderupdate.status);
+    console.log(status);
+    return await this.orderService.updateStatus(id, status);
   }
 
   @Role(UserRole.ADMIN)
