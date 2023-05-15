@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CoffeDto } from 'src/dto/coffe.dto';
-import { CoffeUpdateDto } from 'src/dto/coffeUpdateDto';
-import { Coffe } from 'src/entity/coffe';
-import { CoffeRepossitory } from 'src/repositories/coffe-repository';
+import { CoffeDto } from '../../dto/coffe.dto';
+import { CoffeUpdateDto } from '../../dto/coffeUpdateDto';
+import { Coffe } from '../../entity/coffe';
+import { CoffeRepossitory } from '../../repositories/coffe-repository';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class CoffeService {

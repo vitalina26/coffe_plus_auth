@@ -1,12 +1,12 @@
+import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
+import { User } from './user';
 import {
   BeansClass,
   CookingMethod,
   Country,
   DegreeOfRoasting,
   ProcessingType,
-} from 'src/dto/coffe.dto';
-import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
-import { User } from './user';
+} from '../dto/coffe.dto';
 
 @Entity({ name: 'coffe' })
 export class Coffe {
