@@ -12,13 +12,14 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Role } from 'src/decorator/role';
-import { CoffeDto } from 'src/dto/coffe.dto';
-import { CoffeUpdateDto } from 'src/dto/coffeUpdateDto';
-import { UserRole } from 'src/entity/user';
-import { HttpExceptionFilter } from 'src/fIlters/http-eception.filter';
-import { RoleGuard } from 'src/guard/role.guard/role.guard';
+
 import { CoffeService } from '../../services/coffe.service/coffe.service';
+import { HttpExceptionFilter } from '../../fIlters/http-eception.filter';
+import { UserRole } from '../../entity/user';
+import { Role } from '../../decorator/role';
+import { RoleGuard } from '../../guard/role.guard/role.guard';
+import { CoffeDto } from '../../dto/coffe.dto';
+import { CoffeUpdateDto } from '../../dto/coffeUpdateDto';
 
 @Controller('coffe')
 @UseFilters(new HttpExceptionFilter())
