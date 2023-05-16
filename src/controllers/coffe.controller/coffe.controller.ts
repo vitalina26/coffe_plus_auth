@@ -17,8 +17,8 @@ import { CoffeDto } from 'src/dto/coffe.dto';
 import { CoffeUpdateDto } from 'src/dto/coffeUpdateDto';
 import { UserRole } from 'src/entity/user';
 import { HttpExceptionFilter } from 'src/fIlters/http-eception.filter';
-import { RoleGuard } from 'src/guard/role.guard';
-import { CoffeService } from '../services/coffe.service';
+import { RoleGuard } from 'src/guard/role.guard/role.guard';
+import { CoffeService } from '../../services/coffe.service/coffe.service';
 
 @Controller('coffe')
 @UseFilters(new HttpExceptionFilter())

@@ -14,7 +14,7 @@ import { Role } from 'src/decorator/role';
 import { UserUpdateDto } from 'src/dto/userUpdateDto';
 import { UserRole } from 'src/entity/user';
 import { HttpExceptionFilter } from 'src/fIlters/http-eception.filter';
-import { RoleGuard } from 'src/guard/role.guard';
+import { RoleGuard } from 'src/guard/role.guard/role.guard';
 import { UserService } from 'src/services/user.service';
 
 @Controller('user')

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CoffeService } from '../services/coffe.service';
-import { CoffeController } from '../controllers/coffe.controller';
+import { CoffeService } from '../services/coffe.service/coffe.service';
+import { CoffeController } from '../controllers/coffe.controller/coffe.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Coffe } from 'src/entity/coffe';
 import { AuthModule } from './auth.module';

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { CoffeUpdateDto } from 'src/dto/coffeUpdateDto';
-import { Coffe } from 'src/entity/coffe';
+
 import { Repository, DataSource } from 'typeorm';
+import { Coffe } from '../entity/coffe';
+import { CoffeUpdateDto } from '../dto/coffeUpdateDto';
 
 @Injectable()
 export class CoffeRepossitory extends Repository<Coffe> {
@@ -10,7 +11,7 @@ export class CoffeRepossitory extends Repository<Coffe> {
   }
 
   async createCoffe(coffe: Coffe) {
-    await this.save(coffe);
+    await this.insert(coffe);
   }
 
   async findAll(): Promise<Coffe[]> {
